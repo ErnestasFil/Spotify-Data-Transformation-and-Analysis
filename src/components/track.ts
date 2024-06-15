@@ -7,17 +7,23 @@ export default class Track implements ITrack {
   name: string;
   artists: string[];
   id_artists: string[];
-  release_date: Date;
+  duration_ms: number;
+  year: number;
+  month: number;
+  day: number;
   popularity: number;
   energy: number;
-  danceability: number;
+  danceability: string;
 
   constructor(track: ITrack) {
     this.id = track.id;
     this.name = track.name;
     this.artists = track.artists;
     this.id_artists = track.id_artists;
-    this.release_date = track.release_date;
+    this.duration_ms = track.duration_ms;
+    this.year = track.year;
+    this.month = track.month;
+    this.day = track.day;
     this.popularity = track.popularity;
     this.energy = track.energy;
     this.danceability = track.danceability;
@@ -29,10 +35,25 @@ export default class Track implements ITrack {
       name: row.name,
       artists: DataSlicer.parseArrayFromCSV(row.artists),
       id_artists: DataSlicer.parseArrayFromCSV(row.id_artists),
-      release_date: new Date(row.release_date),
+      duration_ms: parseInt(row.duration_ms),
+      year: new Date(row.release_date).getFullYear(),
+      month: new Date(row.release_date).getMonth() + 1,
+      day: new Date(row.release_date).getDate(),
       popularity: parseInt(row.popularity),
       energy: parseFloat(row.energy),
-      danceability: parseFloat(row.danceability),
+      danceability: Track.danceabilityValue(parseFloat(row.danceability)),
     });
   }
+
+  private static danceabilityValue: (value: number) => string = (value) => {
+    if (value >= 0 && value < 0.5) {
+      return 'Low';
+    } else if (value >= 0.5 && value <= 0.6) {
+      return 'Medium';
+    } else if (value > 0.6 && value <= 1) {
+      return 'High';
+    } else {
+      return 'Unexpected value';
+    }
+  };
 }

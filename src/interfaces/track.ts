@@ -3,8 +3,11 @@ export interface ITrack {
   name: string;
   artists: string[];
   id_artists: string[];
-  release_date: Date;
+  duration_ms: number;
+  year: number;
+  month: number;
+  day: number;
   popularity: number;
   energy: number;
-  danceability: number;
+  danceability: string;
 }

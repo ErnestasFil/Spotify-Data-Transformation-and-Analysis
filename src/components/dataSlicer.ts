@@ -2,6 +2,8 @@ import csv from 'csv-parser';
 import fs from 'fs';
 
 import { DataRow } from '../interfaces/datarow';
+import Artist from './artist';
+import Track from './track';
 
 export default class DataSlicer {
   static parseArrayFromCSV(stringArray: string): string[] {
@@ -28,5 +30,17 @@ export default class DataSlicer {
     });
 
     return data;
+  }
+
+  static filterTracks(data: Track[]): Track[] {
+    return data.filter((track) => track.name.length > Number(process.env.TRACK_NAME_LENGHT) && track.duration_ms >= Number(process.env.TRACK_MIN_LENGHT) * 60000);
+  }
+
+  static filterArtists(tracks: Track[], artists: Artist[]): Artist[] {
+    const uniqueArtistIds = tracks.reduce<Set<string>>((acc, track) => {
+      track.id_artists.forEach((id) => acc.add(id));
+      return acc;
+    }, new Set<string>());
+    return artists.filter((artist) => uniqueArtistIds.has(artist.id));
   }
 }
