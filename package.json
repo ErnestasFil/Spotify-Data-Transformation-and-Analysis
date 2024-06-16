@@ -1,15 +1,15 @@
 {
   "name": "spotify-data-transformation",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node dist/app.js",
     "build": "tsc",
     "migrate:make": "npx knex migrate:make --knexfile ./src/knexfile.ts",
     "migrate:latest": "npx knex migrate:latest --knexfile ./src/knexfile.ts",
     "migrate:rollback": "npx knex migrate:rollback --knexfile ./src/knexfile.ts",
-    "seed:run": "npx knex seed:run --knexfile ./src/knexfile.ts"
+    "seed:run": "npx knex seed:run --knexfile ./src/knexfile.ts",
+    "start:full": "npm run build && node dist/app.js"
   },
   "keywords": [],
   "author": "",

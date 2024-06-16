@@ -2,8 +2,7 @@ import Artist from './components/artist';
 import Track from './components/track';
 import DataSlicer from './components/dataSlicer';
 import S3Storage from './components/s3Storage';
-import db from './components/database';
-
+import Query from './components/qurey';
 
 export default class Main {
   static async main() {
@@ -26,12 +25,48 @@ export default class Main {
     const tracksData = await DataSlicer.processJSON('filtered_tracks.json');
     const artistsData = await DataSlicer.processJSON('filtered_artists.json');
 
-    await db('artists').truncate();
-    await db('tracks').truncate();
+    await Query.truncate('artists');
+    await Query.truncate('tracks');
 
-    await db.batchInsert('artists', artistsData, 100);
-    await db.batchInsert('tracks', tracksData, 100);
+    await Query.insert('artists', artistsData);
+    await Query.insert('tracks', tracksData);
 
-    db.destroy();
+    const queryData = await Query.raw(`
+      WITH RankedTracks AS (
+        SELECT
+          T.id,
+          T.name,
+          T.popularity,
+          T.energy,
+          T.danceability,
+          T.year,
+          SUM(A.followers) as total_followers,
+          ROW_NUMBER() OVER (PARTITION BY T.year ORDER BY T.energy DESC, SUM(A.followers) DESC) as rank
+        FROM
+          tracks as T,
+          LATERAL unnest(T.id_artists) as artist_id
+        JOIN
+          artists as A ON artist_id = A.id
+        GROUP BY
+          T.id, T.name, T.popularity, T.energy, T.danceability, T.year
+        HAVING
+          SUM(A.followers) > 0
+      )
+      SELECT
+        id,
+        name,
+        popularity,
+        energy,
+        danceability,
+        year,
+        total_followers
+      FROM
+        RankedTracks
+      WHERE
+        rank = 1
+    `);
+
+    await DataSlicer.saveJSON('results.json', queryData);
+    await Query.destroy();
   }
 }

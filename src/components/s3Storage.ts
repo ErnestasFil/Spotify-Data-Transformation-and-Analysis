@@ -30,7 +30,8 @@ export default class S3Storage {
       const result = await this.s3.upload(params).promise();
       console.log(`File uploaded successfully. ${result.Location}`);
     } catch (error) {
-      console.error('Error uploading file:', error);
+      console.error('Error uploading file');
+      throw error;
     }
   }
 
@@ -50,14 +51,14 @@ export default class S3Storage {
 
       return response.Contents;
     } catch (error) {
-      console.error('Error listing objects:', error);
+      console.error('Error listing objects');
       throw error;
     }
   }
 
   async downloadFile(key: string, downloadPath: string) {
     const bucketName = process.env.S3_BUCKET_NAME;
-    
+
     if (!bucketName) {
       throw new Error('S3_BUCKET_NAME is not defined in environment variables');
     }
@@ -73,7 +74,7 @@ export default class S3Storage {
       fs.writeFileSync(downloadPath, response.Body as Buffer);
       console.log(`File downloaded successfully: ${key}`);
     } catch (error) {
-      console.error(`Error downloading file ${key}:`, error);
+      console.error(`Error downloading file ${key}`);
       throw error;
     }
   }
