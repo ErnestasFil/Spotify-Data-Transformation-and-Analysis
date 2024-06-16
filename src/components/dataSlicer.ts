@@ -6,6 +6,7 @@ import Artist from './artist';
 import Track from './track';
 
 export default class DataSlicer {
+  
   static parseArrayFromCSV(stringArray: string): string[] {
     const array = stringArray.replace(/'/g, '').slice(1, -1).split(',');
     return array.map((element) => element.trim());
@@ -15,7 +16,7 @@ export default class DataSlicer {
     const data: T[] = [];
 
     await new Promise<void>((resolve, reject) => {
-      fs.createReadStream(process.env.DATA_FOLDER + filename)
+      fs.createReadStream(process.env.DATA_FOLDER + '/' + filename)
         .pipe(csv())
         .on('data', (row: DataRow) => {
           const item = fromCSV(row);
@@ -30,6 +31,16 @@ export default class DataSlicer {
     });
 
     return data;
+  }
+
+  static async processJSON(filename: string): Promise<any[]> {
+    try {
+      const fileContent = fs.readFileSync(process.env.FILTERED_DATA_FOLDER + '/' + filename, 'utf-8');
+      return JSON.parse(fileContent);
+    } catch (error) {
+      console.error('Error reading or parsing JSON file:', error);
+      throw error;
+    }
   }
 
   static filterTracks(data: Track[]): Track[] {

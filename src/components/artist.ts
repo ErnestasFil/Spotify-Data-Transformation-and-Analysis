@@ -1,5 +1,5 @@
-import IArtist from "../interfaces/artist";
-import { DataRow } from "../interfaces/datarow";
+import IArtist from '../interfaces/artist';
+import { DataRow } from '../interfaces/datarow';
 
 export default class Artist implements IArtist {
   id: string;
@@ -16,7 +16,7 @@ export default class Artist implements IArtist {
     return new Artist({
       id: row.id,
       name: row.name,
-      followers: parseInt(row.followers),
+      followers: row.followers ? parseInt(row.followers) : 0,
     });
   }
 }
