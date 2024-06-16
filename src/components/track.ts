@@ -35,12 +35,12 @@ export default class Track implements ITrack {
       name: row.name,
       artists: DataSlicer.parseArrayFromCSV(row.artists),
       id_artists: DataSlicer.parseArrayFromCSV(row.id_artists),
-      duration_ms: parseInt(row.duration_ms),
+      duration_ms: row.duration_ms ? parseInt(row.duration_ms) : 0,
       year: new Date(row.release_date).getFullYear(),
       month: new Date(row.release_date).getMonth() + 1,
       day: new Date(row.release_date).getDate(),
-      popularity: parseInt(row.popularity),
-      energy: parseFloat(row.energy),
+      popularity: row.popularity ? parseInt(row.popularity) : 0,
+      energy: row.energy ? parseFloat(row.energy) : 0,
       danceability: Track.danceabilityValue(parseFloat(row.danceability)),
     });
   }

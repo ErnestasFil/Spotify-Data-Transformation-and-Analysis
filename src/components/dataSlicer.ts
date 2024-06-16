@@ -56,6 +56,7 @@ export default class DataSlicer {
       }
 
       const fileContent = fs.readFileSync(directory + '/' + filename, 'utf-8');
+      console.log(`File ${filename} was successfully read`);
       return JSON.parse(fileContent);
     } catch (error) {
       console.error('Error reading or parsing JSON file');

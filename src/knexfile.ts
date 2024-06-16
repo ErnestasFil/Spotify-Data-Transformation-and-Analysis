@@ -12,10 +12,10 @@ const config: Knex.Config = {
     database: process.env.DB_DATABASE!,
   },
   migrations: {
-    directory: './migrations',
+    directory: path.join(__dirname, '../src/migrations'),
   },
   seeds: {
-    directory: './seeds',
+    directory: path.join(__dirname, '../src/seeds'), 
   },
 };
 

@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "src/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "build": "tsc",
     "migrate:make": "npx knex migrate:make --knexfile ./src/knexfile.ts",
     "migrate:latest": "npx knex migrate:latest --knexfile ./src/knexfile.ts",
@@ -17,9 +18,12 @@
   "description": "",
   "devDependencies": {
     "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
     "@types/knex": "^0.16.1",
     "@types/node": "^20.14.2",
+    "jest": "^29.7.0",
     "prettier": "3.3.2",
+    "ts-jest": "^29.1.4",
     "typescript": "^5.4.5"
   },
   "dependencies": {

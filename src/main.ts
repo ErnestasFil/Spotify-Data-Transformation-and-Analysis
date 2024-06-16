@@ -2,7 +2,7 @@ import Artist from './components/artist';
 import Track from './components/track';
 import DataSlicer from './components/dataSlicer';
 import S3Storage from './components/s3Storage';
-import Query from './components/qurey';
+import Query from './components/query';
 
 export default class Main {
   static async main() {

@@ -7,7 +7,6 @@ export default class Query {
       console.log(`Table ${table} truncated successfully.`);
     } catch (error) {
       console.error(`Error truncating table ${table}`);
-      throw error;
     }
   }
 
@@ -17,7 +16,6 @@ export default class Query {
       console.log(`Data inserted into table ${table} successfully.`);
     } catch (error) {
       console.error(`Error inserting data into table ${table}`);
-      throw error;
     }
   }
 
@@ -27,7 +25,6 @@ export default class Query {
       console.log(`Database connection closed successfully.`);
     } catch (error) {
       console.error(`Error closing database connection`);
-      throw error;
     }
   }
 
@@ -38,7 +35,6 @@ export default class Query {
       return results.rows;
     } catch (error) {
       console.error(`Error in execution of this query`);
-      throw error;
     }
   }
 }
